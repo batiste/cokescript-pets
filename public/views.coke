@@ -15,7 +15,6 @@ dom render(state)
     ="Pet list"
   =statusFilter(state)
   <ul>
-    console.log(state)
     for pet in state.pets
       <li>
         if state.showDetails == pet.id
