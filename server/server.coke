@@ -1,0 +1,17 @@
+
+express = require("express")
+app = express()
+proxy = require('express-http-proxy')
+
+app.use('/api', proxy('http://petstore.swagger.io/'))
+
+app.use(express.static("dist"))
+app.use(express.static("public"))
+
+app.get("/", def(req, res)
+  res.send("Welcome, the client is <a href='index.html'>here</a>")
+)
+
+module.exports = {
+  app: app
+}

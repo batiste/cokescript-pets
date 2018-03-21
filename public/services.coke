@@ -1,0 +1,16 @@
+
+headers = {}
+headers["user-agent"] = 'Mozilla/4.0 MDN Example'
+headers["content-type"] = 'application/json'
+
+def getPets(status)
+  return fetch("/api/v2/pet/findByStatus?status=#{status}", {
+    headers: headers
+  })
+
+def addPet(newPetName)
+  return fetch("/api/v2/pet/", {
+    method: 'POST', 
+    body: JSON.stringify({name: newPetName}), 
+    headers: headers
+  })

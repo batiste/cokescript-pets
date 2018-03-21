@@ -1,0 +1,34 @@
+{
+  "name": "cokescript-pets",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "coke **/*.coke -m -c",
+    "serve": "node server/index.coke.js",
+    "api": "node api.coke.js",
+    "watch": "nodemon -e coke,html --exec \"yarn run build && webpack && node server/index.coke.js\""
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "*.coke.js",
+      "**/*.coke.js"
+    ]
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cokescript": "^0.0.8",
+    "epegjs": "^0.0.55",
+    "express": "^4.16.2",
+    "express-http-proxy": "^1.1.0",
+    "glob": "^7.1.2",
+    "jest": "^22.3.0",
+    "nodemon": "^1.17.1",
+    "puppeteer": "^1.1.0",
+    "virtual-dom": "^2.1.1",
+    "webpack": "^4.2.0",
+    "webpack-cli": "^2.0.12"
+  }
+}

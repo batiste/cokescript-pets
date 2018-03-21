@@ -1,0 +1,83 @@
+cokescript = require('cokescript')
+views = require('./views.coke.js')
+services = require('./services.coke.js')
+
+app = document.getElementById("app")
+
+# our application state
+state = {
+  sesssionId: null,
+  pets: 1,
+  showDetails: null,
+  status: 'pending',
+  processing: false
+}
+
+# events
+def detailsPet(target, event)
+  id = parseInt(target.dataset.id, 10)
+  state.showDetails = id
+  patch()
+
+def applyStatusFilter(target)
+  select = document.getElementById('status')
+  state.status = select.options[select.selectedIndex].value
+  getPets(state.status)
+
+eventRegister = {
+  details: detailsPet,
+  applyStatusFilter: applyStatusFilter
+}
+
+def addPet(e)
+  e.preventDefault()
+  state.processing = true
+  patch()
+  newPetName = document.getElementById('name').value
+  services.addPet(newPetName).then(def(response)
+    state.processing = false
+    return response.json().then(def(json)
+      state.pets.unshift(json)
+      patch()
+    )
+  )
+  
+def getPets(status)
+  state.processing = true
+  patch()
+  return services.getPets(status).then(def(response)
+    return response.json().then(def(json)
+      state.pets = json
+      state.processing = false
+      patch()
+    )
+  )
+
+def bindEvents()
+  def clickDelegation(e)
+    event = eventRegister[e.target.dataset.event]
+    if event
+      event(e.target, e)
+  app.addEventListener('click', clickDelegation)
+  app.addEventListener('submit', addPet)
+
+# booting the lifecyle
+virtualDom = null
+realDom = null
+
+def bootup()
+  virtualDom := cokescript.h("div", views.render(state))
+  realDom := cokescript.create(virtualDom)
+  app.innerHTML = ""
+  app.appendChild(realDom)
+  bindEvents()
+  getPets(status)
+  
+bootup()
+
+# diff and patch the dom
+def patch(e)
+  newVirtualDom = cokescript.h("div", views.render(state))
+  patches = cokescript.diff(virtualDom, newVirtualDom)
+  cokescript.patch(realDom, patches)
+  virtualDom := newVirtualDom

@@ -1,0 +1,55 @@
+cokescript = require('cokescript')
+
+# main render function
+dom render(state)
+  <form id="addPetForm">
+    <label>
+      ="Pet's name"
+      <input type="text" id="name">
+    if state.processing
+      <input type="submit" id="addPetButton" value="Add pet" disabled>
+    else
+      <input type="submit" id="addPetButton" value="Add pet">
+  
+  <h2>
+    ="Pet list"
+  =statusFilter(state)
+  <ul>
+    console.log(state)
+    for pet in state.pets
+      <li>
+        if state.showDetails == pet.id
+          =petDetails(pet)
+        else
+          =pet.name
+          <button className="details" data-event="details" data-id=pet.id>
+            ="Details"
+
+# pet detail render function
+dom petDetails(pet)
+  ="Id: #{pet.id}"
+  <br>
+  ="Name: #{pet.name}"
+  <br>
+  if pet.category
+    ="Category: #{pet.category.name}"
+    <br>
+  ="Status: #{pet.status}"
+  
+# status filter render function
+dom statusFilter(state)
+  <label>
+    ="Filter by status"
+    <select id="status">
+      <option value="pending" selected=state.status == 'pending'>
+        ="Pending"
+      <option value="available" selected=state.status == 'available'>
+        ="Available"
+      <option value="sold" selected=state.status == 'sold'>
+        ="Sold"
+  if state.processing
+    <button data-event="applyStatusFilter" disabled=null>
+      ="Apply filter"
+  else
+    <button data-event="applyStatusFilter">
+      ="Apply filter"
